@@ -5,7 +5,7 @@ import { OrderDetails, OrderTimeline } from '@/components/store/order-details';
 import { findOrderForCustomer } from '@/server/orders';
 import { rateLimit } from '@/server/rate-limit';
 
-export const metadata: Metadata = { title: 'Track Your Order', description: 'Check the status of your Feathers order.', alternates: { canonical: '/track' } };
+export const metadata: Metadata = { title: 'Track Your Order', description: 'Check the status of your NABA Boutique order.', alternates: { canonical: '/track' } };
 export const dynamic = 'force-dynamic';
 
 type Props = { searchParams: Promise<{ order?: string; phone?: string }> };

@@ -8,7 +8,7 @@ import { waLink } from '@/lib/whatsapp';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Contact Feathers – The 2nd Skin on WhatsApp, phone, email or Instagram for orders, sizes and custom stitching.',
+  description: 'Contact NABA Boutique on WhatsApp, phone, email or Instagram for orders, sizes and custom stitching.',
   alternates: { canonical: '/contact' },
 };
 

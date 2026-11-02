@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { BRAND } from '@/lib/constants';
+import { BRAND, BRAND_QUOTE } from '@/lib/constants';
 import type { PublicConfig } from '@/server/config';
 
 /** Renders JSON-LD safely (closing-tag sequences are escaped). */
@@ -13,6 +13,7 @@ export function organizationLd(c: PublicConfig) {
     '@context': 'https://schema.org',
     '@type': 'ClothingStore',
     name: BRAND,
+    slogan: BRAND_QUOTE,
     url: c.appUrl,
     logo: `${c.appUrl}/icon.svg`,
     image: `${c.appUrl}/opengraph-image`,

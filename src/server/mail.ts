@@ -10,7 +10,7 @@ export async function sendMail(m: { to: string; subject: string; text: string })
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: process.env.MAIL_FROM || 'Feathers <no-reply@example.com>', to: [m.to], subject: m.subject, text: m.text }),
+    body: JSON.stringify({ from: process.env.MAIL_FROM || 'NABA Boutique <no-reply@example.com>', to: [m.to], subject: m.subject, text: m.text }),
   });
   if (!res.ok) console.error('[mail] send failed', res.status, await res.text().catch(() => ''));
 }

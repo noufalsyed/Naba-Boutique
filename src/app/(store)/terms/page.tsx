@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { InfoPage } from '@/components/store/info-page';
 
-export const metadata: Metadata = { title: 'Terms & Conditions', description: 'Terms and conditions for shopping at Feathers – The 2nd Skin.', alternates: { canonical: '/terms' } };
+export const metadata: Metadata = { title: 'Terms & Conditions', description: 'Terms and conditions for shopping at NABA Boutique.', alternates: { canonical: '/terms' } };
 
 export default function TermsPage() {
   return (

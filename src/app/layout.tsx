@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
-import { BRAND } from '@/lib/constants';
+import { BRAND, BRAND_QUOTE } from '@/lib/constants';
 import { storeConfig } from '@/server/config';
 import './globals.css';
 
@@ -13,7 +13,7 @@ export function generateMetadata(): Metadata {
     metadataBase: new URL(appUrl),
     title: { default: `${BRAND} | Ladies Chudidhar, Dress Materials & Custom Stitching`, template: `%s | ${BRAND}` },
     description:
-      'Shop elegant ladies chudidhars, dress materials, ethnic wear and fabrics from Kerala, with made-to-measure stitching. Pay by UPI or card, or order on WhatsApp.',
+      `${BRAND} — “${BRAND_QUOTE}”. Shop elegant ladies chudidhars, dress materials, ethnic wear and fabrics from Kerala, with made-to-measure stitching. Pay by UPI or card, or order on WhatsApp.`,
     applicationName: BRAND,
     openGraph: { type: 'website', siteName: BRAND, locale: 'en_IN' },
     twitter: { card: 'summary_large_image' },

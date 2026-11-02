@@ -4,15 +4,15 @@ import { InfoPage } from '@/components/store/info-page';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Feathers – The 2nd Skin is a Kerala boutique for ladies chudidhars, dress materials, ethnic wear and customized stitching.',
+  description: 'NABA Boutique is a Kerala boutique for ladies chudidhars, dress materials, ethnic wear and customized stitching.',
   alternates: { canonical: '/about' },
 };
 
 export default function AboutPage() {
   return (
-    <InfoPage title="Clothes that feel like a second skin" eyebrow="About Feathers" path="/about">
+    <InfoPage title="Clothes that feel like a second skin" eyebrow="About NABA Boutique" path="/about">
       <p>
-        Feathers – The 2nd Skin began with a simple belief: what you wear every day should feel as natural as your own skin. We are a
+        NABA Boutique began with a simple belief, captured in our signature line <em>“Feathers – The 2nd Skin”</em>: what you wear every day should feel as light and natural as your own skin. We are a
         small ladies fashion boutique from Kerala, choosing every chudidhar, dress material and fabric for comfort first and beauty always.
       </p>
       <h2>What we do</h2>

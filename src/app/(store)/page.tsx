@@ -55,7 +55,7 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute -top-40 -right-40 h-[520px] w-[520px] rounded-full bg-blush/70 blur-3xl" />
         <div className="container-x relative grid items-center gap-10 py-10 md:grid-cols-12 md:py-20">
           <div className="animate-fade-up md:col-span-6 lg:col-span-5">
-            <p className="eyebrow">Feathers – The 2nd Skin</p>
+            <p className="eyebrow">NABA Boutique · <span className="normal-case tracking-[0.12em] italic">Feathers – The 2nd Skin</span></p>
             <h1 className="mt-4 text-[44px] leading-[1.02] font-medium text-charcoal sm:text-[56px] lg:text-[68px]">
               Your Style.
               <br />

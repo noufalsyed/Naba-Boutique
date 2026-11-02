@@ -99,7 +99,7 @@ export function AdminShell({ user, children }: { user: { name: string; role: 'AD
     <div className="flex items-center gap-2.5 border-b border-ivory/10 px-5 py-4">
       <FeatherMark size={24} className="text-rose" />
       <div className="leading-none">
-        <p className="font-serif text-[20px] tracking-[0.12em] text-ivory">FEATHERS</p>
+        <p className="font-serif text-[20px] tracking-[0.12em] text-ivory">NABA</p>
         <p className="text-[9px] uppercase tracking-[0.3em] text-ivory/50">Back Office</p>
       </div>
     </div>
@@ -142,7 +142,7 @@ export function AdminShell({ user, children }: { user: { name: string; role: 'AD
             <button type="button" aria-label="Open menu" onClick={() => setOpen(true)}>
               {open ? <X size={22} /> : <Menu size={22} />}
             </button>
-            <span className="font-serif text-[20px] tracking-[0.1em]">FEATHERS</span>
+            <span className="font-serif text-[20px] tracking-[0.1em]">NABA</span>
             <Link href="/admin/sales/new" className="btn-primary ml-auto px-3 py-2 text-[11px]">
               <ScanLine size={14} /> New Sale
             </Link>

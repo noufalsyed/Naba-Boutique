@@ -57,8 +57,8 @@ test('purchase totals: line discount, bill discount and charges', () => {
 });
 
 test('WhatsApp product message matches the brief', () => {
-  const m = productEnquiryMessage('Feathers – The 2nd Skin', { name: 'Premium Cotton Chudidhar', sku: 'FTS-001', price: 1299 });
-  assert.equal(m, 'Hi Feathers – The 2nd Skin, I am interested in Premium Cotton Chudidhar, SKU FTS-001, Price ₹1,299. Please confirm availability.');
+  const m = productEnquiryMessage('NABA Boutique', { name: 'Premium Cotton Chudidhar', sku: 'FTS-001', price: 1299 });
+  assert.equal(m, 'Hi NABA Boutique, I am interested in Premium Cotton Chudidhar, SKU FTS-001, Price ₹1,299. Please confirm availability.');
   const o = productOrderMessage('Feathers', { name: 'Kurti', sku: 'FTS-9', size: 'M', color: 'Navy', quantity: 2, price: 999 });
   for (const part of ['Product: Kurti', 'SKU: FTS-9', 'Size: M', 'Color: Navy', 'Quantity: 2', 'Price: ₹999 each (₹1,998 total)', 'Please confirm availability and delivery details.']) {
     assert.ok(o.includes(part), part);

@@ -22,7 +22,7 @@ At your domain registrar, create:
 
 | Type | Name | Value |
 |---|---|---|
-| A | `@` (e.g. feathers2ndskin.in) | VM public IP |
+| A | `@` (e.g. nababoutique.in) | VM public IP |
 | A | `www` | VM public IP |
 
 Wait until `ping yourdomain.in` shows the VM IP (usually minutes, up to a few hours).

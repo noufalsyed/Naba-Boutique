@@ -1,5 +1,7 @@
-export const BRAND = 'Feathers – The 2nd Skin';
-export const BRAND_SHORT = 'Feathers';
+export const BRAND = 'NABA Boutique';
+export const BRAND_SHORT = 'NABA';
+/** The boutique's signature line. */
+export const BRAND_QUOTE = 'Feathers – The 2nd Skin';
 export const TAGLINE = 'Your Style. Your Fit. Your Second Skin.';
 
 export const ORDER_STATUSES = [

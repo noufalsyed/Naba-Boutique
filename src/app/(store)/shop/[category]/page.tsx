@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!c) return {};
   return {
     title: `${c.name} for Women`,
-    description: SEO[c.slug] ?? c.description ?? `Shop ${c.name} online at Feathers – The 2nd Skin.`,
+    description: SEO[c.slug] ?? c.description ?? `Shop ${c.name} online at NABA Boutique.`,
     alternates: { canonical: `/shop/${c.slug}` },
     openGraph: { images: c.imageUrl ? [c.imageUrl] : undefined },
   };

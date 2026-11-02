@@ -61,7 +61,7 @@ export async function payForOrder(number: string, key: string) {
       amount: c.amountPaise,
       currency: c.currency,
       order_id: c.providerOrderId,
-      name: 'Feathers – The 2nd Skin',
+      name: 'NABA Boutique',
       description: `Order ${number}`,
       prefill: { name: start.customer.name, contact: start.customer.phone, email: start.customer.email ?? undefined },
       theme: { color: '#7a2e3f' },

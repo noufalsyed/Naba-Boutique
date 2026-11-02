@@ -2,7 +2,7 @@
   "name": "feathers-the-2nd-skin",
   "version": "1.0.0",
   "private": true,
-  "description": "Feathers – The 2nd Skin: ladies fashion & customized stitching store with inventory, purchasing and sales back office",
+  "description": "NABA Boutique (Feathers – The 2nd Skin): ladies fashion & customized stitching store with inventory, purchasing and sales back office",
   "scripts": {
     "dev": "next dev -p 3600",
     "build": "prisma generate && next build",

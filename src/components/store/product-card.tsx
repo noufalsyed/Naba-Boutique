@@ -90,7 +90,7 @@ export function ProductCard({ product: p, priority = false, showActions = true }
               )}
             </>
           ) : (
-            <div className="flex h-full items-center justify-center font-serif text-2xl text-beige">Feathers</div>
+            <div className="flex h-full items-center justify-center font-serif text-2xl text-beige">NABA</div>
           )}
         </Link>
         <div className="pointer-events-none absolute top-2.5 left-2.5 flex flex-col gap-1.5">

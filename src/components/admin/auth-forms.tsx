@@ -14,7 +14,7 @@ function Frame({ title, children }: { title: string; children: React.ReactNode }
         <div className="mb-6 flex items-center gap-2.5">
           <FeatherMark size={26} className="text-wine" />
           <div className="leading-none">
-            <p className="font-serif text-[22px] tracking-[0.12em]">FEATHERS</p>
+            <p className="font-serif text-[22px] tracking-[0.12em]">NABA</p>
             <p className="text-[9px] uppercase tracking-[0.3em] text-muted">Back Office</p>
           </div>
         </div>

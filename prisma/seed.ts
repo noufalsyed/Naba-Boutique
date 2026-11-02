@@ -86,7 +86,7 @@ async function seedStaff() {
     lines.push(`${u.role.padEnd(8)} ${u.email}  ${password}`);
   }
   if (lines.length) {
-    await fs.writeFile('TEST-LOGINS.txt', `Feathers admin logins (created ${new Date().toISOString()})\nChange these after first sign-in.\n\n${lines.join('\n')}\n`, { flag: 'a' });
+    await fs.writeFile('TEST-LOGINS.txt', `NABA Boutique admin logins (created ${new Date().toISOString()})\nChange these after first sign-in.\n\n${lines.join('\n')}\n`, { flag: 'a' });
     console.log('Staff accounts created — see TEST-LOGINS.txt');
   }
 }

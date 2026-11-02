@@ -54,7 +54,7 @@ export interface ImportPreview {
 
 export async function buildTemplate(): Promise<Buffer> {
   const wb = new ExcelJS.Workbook();
-  wb.creator = 'Feathers – The 2nd Skin';
+  wb.creator = 'NABA Boutique';
   const ws = wb.addWorksheet('Stock');
   ws.columns = TEMPLATE_COLUMNS.map((c) => ({ header: c, key: c, width: c === 'Description' ? 40 : c === 'Product Name' ? 30 : 16 }));
   ws.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };

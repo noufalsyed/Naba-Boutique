@@ -3,7 +3,7 @@ import { InfoPage } from '@/components/store/info-page';
 import { publicConfig } from '@/server/config';
 import { formatINR } from '@/lib/format';
 
-export const metadata: Metadata = { title: 'Shipping & Returns', description: 'Delivery times, shipping charges, returns and exchanges at Feathers – The 2nd Skin.', alternates: { canonical: '/shipping-returns' } };
+export const metadata: Metadata = { title: 'Shipping & Returns', description: 'Delivery times, shipping charges, returns and exchanges at NABA Boutique.', alternates: { canonical: '/shipping-returns' } };
 
 export default function ShippingPage() {
   const c = publicConfig();

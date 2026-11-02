@@ -1,5 +1,5 @@
 [Unit]
-Description=Feathers – The 2nd Skin (Next.js)
+Description=NABA Boutique store (Next.js)
 After=network.target postgresql.service
 Wants=postgresql.service
 

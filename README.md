@@ -1,6 +1,8 @@
-# Feathers – The 2nd Skin
+# NABA Boutique
 
-Online store and back office for a ladies fashion and custom stitching boutique.
+*“Feathers – The 2nd Skin”*
+
+Online store and back office for NABA Boutique, a ladies fashion and custom stitching boutique.
 
 - **Store:** home, shop with search/filters/sort, product pages (gallery and zoom, size/colour, size chart, share), cart, checkout (Razorpay UPI/cards/net banking/wallets, or WhatsApp order), order confirmation and tracking, wishlist, custom stitching requests with photo upload, and info and policy pages. SEO: canonical URLs, Open Graph, Product/Organization/Breadcrumb JSON-LD, sitemap and robots.
 - **Back office (`/admin`):** dashboard; **Catalogue** (products, categories, stock, Excel stock upload); **Buying** (purchases, suppliers); **Selling** (sales and counter POS, returns, customers, stitching requests); **Reports** (sales, profit, stock, purchase, payment, cashier, daily summary); staff with Admin and Cashier roles.

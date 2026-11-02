@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { Logo } from '@/components/store/logo';
+import { BRAND_QUOTE } from '@/lib/constants';
 import { FacebookIcon, InstagramIcon, WhatsAppIcon } from '@/components/store/icons';
 import { waLink } from '@/lib/whatsapp';
 import type { PublicConfig } from '@/server/config';
@@ -44,7 +45,8 @@ export function Footer({ config }: { config: PublicConfig }) {
       <div className="container-x grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-4">
           <Logo light />
-          <p className="mt-5 max-w-xs text-[14px] leading-7 text-ivory/65">
+          <p className="mt-4 font-serif text-[20px] text-ivory/85 italic">“{BRAND_QUOTE}”</p>
+          <p className="mt-3 max-w-xs text-[14px] leading-7 text-ivory/65">
             Elegant ethnic wear, premium dress materials and made-to-measure stitching — crafted to feel like your second skin.
           </p>
           <div className="mt-6 flex gap-3">
@@ -105,7 +107,7 @@ export function Footer({ config }: { config: PublicConfig }) {
       </div>
       <div className="border-t border-ivory/10">
         <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-[12px] text-ivory/50 md:flex-row">
-          <p>© {new Date().getFullYear()} Feathers – The 2nd Skin. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} NABA Boutique. All rights reserved.</p>
           <p>Secure payments · UPI · Cards · Net Banking · Wallets</p>
         </div>
       </div>

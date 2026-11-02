@@ -2,13 +2,13 @@ import type { Metadata } from 'next';
 import { InfoPage } from '@/components/store/info-page';
 import { publicConfig } from '@/server/config';
 
-export const metadata: Metadata = { title: 'Privacy Policy', description: 'How Feathers – The 2nd Skin collects, uses and protects your information.', alternates: { canonical: '/privacy-policy' } };
+export const metadata: Metadata = { title: 'Privacy Policy', description: 'How NABA Boutique collects, uses and protects your information.', alternates: { canonical: '/privacy-policy' } };
 
 export default function PrivacyPage() {
   const c = publicConfig();
   return (
     <InfoPage title="Privacy Policy" path="/privacy-policy" updated="November 2026">
-      <p>This policy explains what information we collect when you shop with Feathers – The 2nd Skin and how we use it.</p>
+      <p>This policy explains what information we collect when you shop with NABA Boutique and how we use it.</p>
       <h2>Information we collect</h2>
       <ul>
         <li>Your name, mobile and WhatsApp number, email and delivery address when you place an order.</li>

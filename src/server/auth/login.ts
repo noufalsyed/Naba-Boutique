@@ -50,7 +50,7 @@ export async function requestPasswordReset(email: string, ip: string) {
   const link = `${storeConfig().appUrl}/admin/reset-password?token=${token}`;
   await sendMail({
     to: user.email,
-    subject: 'Reset your Feathers admin password',
+    subject: 'Reset your NABA Boutique admin password',
     text: `Hi ${user.name},\n\nUse this link within one hour to set a new password:\n${link}\n\nIf you did not ask for this, ignore this email.`,
   });
 }
