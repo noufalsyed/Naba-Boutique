@@ -34,7 +34,7 @@ export default async function TrackPage({ searchParams }: Props) {
         <p className="mt-1 text-muted">Enter your order number and the mobile number used at checkout.</p>
       </div>
       <form method="get" className="mx-auto mt-8 grid max-w-xl gap-3 sm:grid-cols-[1fr_1fr_auto]">
-        <input name="order" defaultValue={number} required placeholder="FTS-2026-00001" aria-label="Order number" className="input" />
+        <input name="order" defaultValue={number} required placeholder="NB-2026-00001" aria-label="Order number" className="input" />
         <input name="phone" defaultValue={phone} required inputMode="numeric" placeholder="Mobile number" aria-label="Mobile number" className="input" />
         <button className="btn-primary">Track</button>
       </form>

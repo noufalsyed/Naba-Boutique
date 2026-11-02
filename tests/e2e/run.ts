@@ -153,7 +153,7 @@ async function main() {
     const v = await pickVariant(3);
     const before = await variant(v.id);
     const order = await shopper.ok('/api/checkout', customer({ lines: [{ variantId: v.id, quantity: 2 }] }));
-    assert.match(order.number, /^FTS-\d{4}-\d{5}$/);
+    assert.match(order.number, /^NB-\d{4}-\d{5}$/);
     const held = await variant(v.id);
     assert.equal(held.stock, before.stock, 'stock unchanged while unpaid');
     assert.equal(held.reserved, before.reserved + 2, 'reserved +2');
@@ -591,7 +591,7 @@ async function main() {
     const p = await prisma.product.findUniqueOrThrow({ where: { id: r.id }, include: { variants: true, images: true, category: true } });
     assert.equal(p.variants.length, 2);
     assert.equal(p.variants.find((v) => v.size === 'M')!.stock, 4);
-    assert.match(p.variants[0].sku, /^FTS-/);
+    assert.match(p.variants[0].sku, /^NB-/);
     assert.equal((await shopper.req(`/shop/${p.category.slug}/${p.slug}`)).status, 200);
     const fake = new FormData();
     fake.append('file', new Blob(['<script>alert(1)</script>'], { type: 'image/png' }), 'x.png');

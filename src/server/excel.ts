@@ -60,15 +60,15 @@ export async function buildTemplate(): Promise<Buffer> {
   ws.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
   ws.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF6D2635' } };
   ws.views = [{ state: 'frozen', ySplit: 1 }];
-  ws.addRow({ SKU: 'FTS-101', 'Product Name': 'Cotton Chudidhar', Category: 'Chudidhars', Subcategory: 'Daily Wear', Size: 'M', Color: 'Blue', 'Purchase Price': 450, 'Selling Price': 799, MRP: 899, 'Opening Stock': 20, 'Low Stock Level': 3, Supplier: 'Surat Textiles', Description: 'Soft cotton chudidhar set', Status: 'Active' });
-  ws.addRow({ SKU: 'FTS-102', 'Product Name': 'Designer Material', Category: 'Dress Materials', Subcategory: '', Size: 'Free Size', Color: 'Pink', 'Purchase Price': 650, 'Selling Price': 1199, MRP: 1399, 'Opening Stock': 15, 'Low Stock Level': 2, Supplier: 'Surat Textiles', Description: '', Status: 'Active' });
+  ws.addRow({ SKU: 'NB-101', 'Product Name': 'Cotton Chudidhar', Category: 'Chudidhars', Subcategory: 'Daily Wear', Size: 'M', Color: 'Blue', 'Purchase Price': 450, 'Selling Price': 799, MRP: 899, 'Opening Stock': 20, 'Low Stock Level': 3, Supplier: 'Surat Textiles', Description: 'Soft cotton chudidhar set', Status: 'Active' });
+  ws.addRow({ SKU: 'NB-102', 'Product Name': 'Designer Material', Category: 'Dress Materials', Subcategory: '', Size: 'Free Size', Color: 'Pink', 'Purchase Price': 650, 'Selling Price': 1199, MRP: 1399, 'Opening Stock': 15, 'Low Stock Level': 2, Supplier: 'Surat Textiles', Description: '', Status: 'Active' });
 
   const cats = await prisma.category.findMany({ orderBy: { sortOrder: 'asc' }, select: { name: true } });
   const help = wb.addWorksheet('How to fill');
   help.columns = [{ width: 24 }, { width: 90 }];
   const lines: [string, string][] = [
     ['Column', 'Notes'],
-    ['SKU', 'Required. Unique code for one size + colour (e.g. FTS-101).'],
+    ['SKU', 'Required. Unique code for one size + colour (e.g. NB-101).'],
     ['Product Name', 'Required for new products. Rows with the same name and category become sizes/colours of one product.'],
     ['Category', `Required for new products. One of: ${cats.map((c) => c.name).join(', ')}`],
     ['Size / Color', 'Size defaults to "Free Size".'],

@@ -142,7 +142,7 @@ async function main() {
       });
       for (const c of p.colors) {
         for (const size of p.sizes) {
-          const sku = `FTS-${String(skuNo++).padStart(3, '0')}`;
+          const sku = `NB-${String(skuNo++).padStart(3, '0')}`;
           const v = await tx.productVariant.create({
             data: { productId: product.id, sku, size, color: c.name, price: p.price, mrp: p.mrp, costPrice: Math.round(p.price * 0.55), lowStockLevel: 2 },
           });

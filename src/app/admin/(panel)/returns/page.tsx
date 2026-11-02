@@ -32,7 +32,7 @@ export default async function ReturnsPage({ searchParams }: { searchParams: SP }
       />
       <Card title="New Return" className="mb-5">
         <form method="get" className="flex flex-wrap items-end gap-2 p-4">
-          <label><span className="label">Order number</span><input name="order" defaultValue={orderNo} required placeholder="FTS-2026-00012" className="input py-2" /></label>
+          <label><span className="label">Order number</span><input name="order" defaultValue={orderNo} required placeholder="NB-2026-00012" className="input py-2" /></label>
           <button className="btn-dark px-5 py-2.5">Find Order</button>
         </form>
         {orderNo && (
