@@ -1,0 +1,29 @@
+[Unit]
+Description=Feathers – The 2nd Skin (Next.js)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=feathers
+Group=feathers
+WorkingDirectory=/opt/feathers/.next/standalone
+EnvironmentFile=/opt/feathers/.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+# Keep memory in check on the 1 GB VM; Ampere VMs can raise this.
+Environment=NODE_OPTIONS=--max-old-space-size=512
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/feathers/storage /opt/feathers/.next/standalone/.next/cache
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target

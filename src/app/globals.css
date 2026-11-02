@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ivory: #fbf8f3;
+  --color-sand: #f4ede3;
+  --color-nude: #e9ddcd;
+  --color-beige: #d8c6ae;
+  --color-charcoal: #2a2624;
+  --color-ink: #3b3532;
+  --color-muted: #6f6660;
+  --color-line: #e6dccf;
+  --color-wine: #7a2e3f;
+  --color-wine-dark: #5d2130;
+  --color-rose: #c4868f;
+  --color-blush: #f3e3e1;
+  --color-gold: #b38f55;
+  --color-success: #3f7a52;
+  --color-danger: #b23a3a;
+  --color-warn: #b7791f;
+
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-sans: var(--font-jost), 'Jost', system-ui, sans-serif;
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-pop: pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+  --animate-slide-in: slide-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-slide-up: slide-up 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+  @keyframes slide-in {
+    from { transform: translateX(100%); }
+    to { transform: none; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(100%); opacity: 0.4; }
+    to { transform: none; opacity: 1; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ivory text-charcoal font-sans antialiased;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  h1, h2, h3, .font-display {
+    @apply font-serif;
+    letter-spacing: 0.005em;
+  }
+  ::selection {
+    @apply bg-wine text-ivory;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-wine);
+    outline-offset: 2px;
+  }
+  input, select, textarea, button {
+    font: inherit;
+  }
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+@utility eyebrow {
+  @apply text-[11px] font-medium uppercase tracking-[0.28em] text-wine;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap px-6 py-3 text-[12px] font-medium uppercase tracking-[0.18em] transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-wine text-ivory hover:bg-wine-dark;
+}
+@utility btn-dark {
+  @apply btn bg-charcoal text-ivory hover:bg-black;
+}
+@utility btn-outline {
+  @apply btn border border-charcoal text-charcoal hover:bg-charcoal hover:text-ivory;
+}
+@utility btn-light {
+  @apply btn bg-ivory text-charcoal hover:bg-white;
+}
+@utility btn-whatsapp {
+  @apply btn bg-[#1f8f4e] text-white hover:bg-[#187a41];
+}
+@utility input {
+  @apply w-full rounded-none border border-line bg-white px-3.5 py-3 text-[15px] text-charcoal placeholder:text-muted/60 transition-colors focus:border-wine focus:outline-none;
+}
+@utility label {
+  @apply mb-1.5 block text-[12px] font-medium uppercase tracking-[0.12em] text-muted;
+}
+@utility chip {
+  @apply inline-flex min-w-11 items-center justify-center border border-line bg-white px-3 py-2 text-[13px] transition-colors hover:border-charcoal;
+}
+@utility chip-active {
+  @apply border-charcoal bg-charcoal text-ivory hover:border-charcoal;
+}
+@utility prose-store {
+  & h2 { @apply mt-8 mb-3 text-2xl text-charcoal; }
+  & h3 { @apply mt-6 mb-2 text-xl text-charcoal; }
+  & p, & li { @apply text-ink/90 leading-7; }
+  & p { @apply my-3; }
+  & ul { @apply my-3 list-disc space-y-1.5 pl-5; }
+  & a { @apply text-wine underline underline-offset-4; }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: none; }
+}
+
+/* Hide scrollbars on horizontal rails but keep them scrollable */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; font-size: 12px; }
+}
