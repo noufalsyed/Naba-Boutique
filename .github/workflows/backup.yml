@@ -1,0 +1,29 @@
+# Nightly database backup for the Netlify + Neon deployment (free on GitHub).
+# Needs the repository secret NEON_DIRECT_URL (Settings → Secrets and variables → Actions).
+# Each backup is kept for 30 days under Actions → Database backup → the run → Artifacts.
+# Restore: pg_restore --clean --no-owner -d "<DIRECT_URL>" db.dump
+name: Database backup
+
+on:
+  schedule:
+    - cron: '30 21 * * *' # 03:00 IST
+  workflow_dispatch: {}
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Dump the database
+        env:
+          DATABASE: ${{ secrets.NEON_DIRECT_URL }}
+        run: |
+          if [ -z "$DATABASE" ]; then echo "Add the NEON_DIRECT_URL secret to enable backups."; exit 1; fi
+          # The postgres:17 image matches Neon's default PostgreSQL 17.
+          docker run --rm -e DATABASE postgres:17 sh -c 'pg_dump --format=custom --no-owner "$DATABASE"' > db.dump
+          ls -lh db.dump
+      - uses: actions/upload-artifact@v4
+        with:
+          name: db-${{ github.run_id }}
+          path: db.dump
+          retention-days: 30

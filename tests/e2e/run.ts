@@ -281,6 +281,8 @@ async function main() {
     let limited = false;
     for (let i = 0; i < 14 && !limited; i++) limited = (await c.req('/api/checkout', { body: {} })).status === 429;
     assert.ok(limited);
+    const row = await prisma.rateLimit.findUniqueOrThrow({ where: { key: `checkout:${c.ip}` } });
+    assert.ok(row.count > 12 && row.resetAt > new Date(), 'the count is kept in the database, shared by all instances');
   });
   await step('wrong passwords are refused; admin and cashier can sign in', async () => {
     assert.ok(creds.admin.email && creds.admin.password, 'admin login from TEST-LOGINS.txt or E2E_ADMIN_EMAIL/PASSWORD');
@@ -597,7 +599,7 @@ async function main() {
     fake.append('file', new Blob(['<script>alert(1)</script>'], { type: 'image/png' }), 'x.png');
     assert.equal((await admin.req('/api/admin/uploads', { form: fake })).status, 400, 'non-images are rejected');
   });
-  await step('stitching request with images; photos are private to staff', async () => {
+  await step('stitching request with images; photos are private to staff (also via /media)', async () => {
     const img = await sharp({ create: { width: 300, height: 300, channels: 3, background: '#c98d95' } }).png().toBuffer();
     const fd = new FormData();
     fd.append('name', 'Fathima E2E');
@@ -613,6 +615,9 @@ async function main() {
     assert.equal((await new Client().req(`/api/admin/stitching/image/${req.images[0].id}`)).status, 401);
     const staff = await fetch(`${BASE}/api/admin/stitching/image/${req.images[0].id}`, { headers: { cookie: admin.cookie } });
     assert.equal(staff.status, 200);
+    for (const probe of [`/media/..%2Fprivate%2F${req.images[0].path.replace('/', '%2F')}`, `/media/%2E%2E/private/${req.images[0].path}`]) {
+      assert.equal((await fetch(BASE + probe)).status, 404, `private photo must not be reachable through ${probe}`);
+    }
     await admin.ok(`/api/admin/stitching/${req.id}`, { status: 'CONTACTED', adminNotes: 'Quoted ₹650' }, 'PATCH');
     const missing = await shopper.req('/api/stitching', { form: (() => { const f = new FormData(); f.append('name', ''); f.append('phone', '1'); return f; })() });
     assert.equal(missing.status, 400);

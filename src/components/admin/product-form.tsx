@@ -7,6 +7,7 @@ import { ArrowDown, ArrowUp, ImagePlus, Loader2, Plus, Trash2, Wand2 } from 'luc
 import { Card, Field, SubmitButton, useAction, useToast } from '@/components/admin/ui';
 import { api } from '@/lib/api-client';
 import { discountPercent } from '@/lib/pricing';
+import { shrinkImage } from '@/lib/shrink-image';
 import { blankVariant, type ProductFormValue, type VariantRow } from '@/lib/product-form';
 
 export type { ProductFormValue, VariantRow };
@@ -24,11 +25,14 @@ export function ProductForm({ initial, categories, suppliers, canDelete }: { ini
   const upload = async (files: FileList | null) => {
     if (!files?.length) return;
     setUploading(true);
-    const fd = new FormData();
-    [...files].slice(0, 10).forEach((f) => fd.append('file', f));
     try {
-      const { urls } = await api<{ urls: string[] }>('/api/admin/uploads', fd);
-      setV((x) => ({ ...x, images: [...x.images, ...urls.map((url) => ({ url, alt: '' }))].slice(0, 10) }));
+      // One photo per request keeps each upload well under the hosting size limit.
+      for (const f of [...files].slice(0, 10)) {
+        const fd = new FormData();
+        fd.append('file', await shrinkImage(f));
+        const { urls } = await api<{ urls: string[] }>('/api/admin/uploads', fd);
+        setV((x) => ({ ...x, images: [...x.images, ...urls.map((url) => ({ url, alt: '' }))].slice(0, 10) }));
+      }
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Upload failed', 'error');
     } finally {

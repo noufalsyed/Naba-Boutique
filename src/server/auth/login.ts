@@ -15,7 +15,7 @@ let dummyHash: Promise<string> | null = null;
 const getDummyHash = () => (dummyHash ??= hashPassword('not-a-real-password-0'));
 
 export async function login(email: string, password: string, meta: { ip: string; userAgent?: string }) {
-  if (!rateLimit(`login:ip:${meta.ip}`, 20, 15 * 60_000).ok || !rateLimit(`login:email:${email}`, 10, 15 * 60_000).ok) throw tooMany();
+  if (!(await rateLimit(`login:ip:${meta.ip}`, 20, 15 * 60_000)).ok || !(await rateLimit(`login:email:${email}`, 10, 15 * 60_000)).ok) throw tooMany();
   const user = await prisma.adminUser.findUnique({ where: { email } });
   const ok = await verifyPassword(password, user?.passwordHash ?? (await getDummyHash()));
   if (!user || !user.isActive) throw unauthorized('Email or password is incorrect');
@@ -39,7 +39,7 @@ const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
 
 /** Emails a one-hour reset link. Always succeeds so emails cannot be probed. */
 export async function requestPasswordReset(email: string, ip: string) {
-  if (!rateLimit(`reset:ip:${ip}`, 5, 15 * 60_000).ok) throw tooMany();
+  if (!(await rateLimit(`reset:ip:${ip}`, 5, 15 * 60_000)).ok) throw tooMany();
   const user = await prisma.adminUser.findUnique({ where: { email } });
   if (!user || !user.isActive) return;
   const token = randomBytes(32).toString('base64url');

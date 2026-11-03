@@ -4,6 +4,7 @@ import { ZodError, type ZodType, type ZodTypeDef } from 'zod';
 import { Prisma } from '@prisma/client';
 import { AppError, forbidden, unauthorized } from '@/server/errors';
 import { getAdmin, type AdminAuth } from '@/server/auth/session';
+import { onNetlify } from '@/server/platform';
 
 type Schema<T> = ZodType<T, ZodTypeDef, unknown>;
 
@@ -21,8 +22,12 @@ export interface AdminContext<P> extends PublicContext<P> {
 
 type RouteArgs<P> = { params: Promise<P> };
 
-export function clientIp(req: NextRequest): string {
-  return req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+// The header the proxy in front sets (and overwrites if a visitor sends it):
+// Nginx sets X-Real-IP; Netlify sets X-Nf-Client-Connection-Ip.
+const IP_HEADER = onNetlify ? 'x-nf-client-connection-ip' : 'x-real-ip';
+
+export function clientIp(headers: Pick<Headers, 'get'>): string {
+  return headers.get(IP_HEADER) || headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
 }
 
 export function errorResponse(err: unknown) {
@@ -70,7 +75,7 @@ const queryParser = (req: NextRequest) => <T,>(schema: Schema<T>) => schema.pars
 const toResponse = (result: unknown) => (result instanceof Response ? result : NextResponse.json({ data: result ?? null }));
 
 function baseContext<P>(req: NextRequest, params: P): PublicContext<P> {
-  return { req, params, ip: clientIp(req), body: bodyParser(req), query: queryParser(req) };
+  return { req, params, ip: clientIp(req.headers), body: bodyParser(req), query: queryParser(req) };
 }
 
 export function publicApi<P = Record<string, string>>(handler: (ctx: PublicContext<P>) => Promise<unknown>) {

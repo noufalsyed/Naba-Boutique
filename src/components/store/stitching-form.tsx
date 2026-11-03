@@ -6,6 +6,7 @@ import { useStore } from '@/components/store/store-provider';
 import { WhatsAppIcon } from '@/components/store/icons';
 import { api, ApiError } from '@/lib/api-client';
 import { waLink } from '@/lib/whatsapp';
+import { shrinkImage } from '@/lib/shrink-image';
 
 const MEASURES = [
   ['bust', 'Bust'],
@@ -46,7 +47,7 @@ function Upload({ name, label, files, setFiles }: { name: string; label: string;
               className="sr-only"
               multiple
               onChange={(e) => {
-                const picked = [...(e.target.files ?? [])].filter((f) => f.size <= 6 * 1024 * 1024);
+                const picked = [...(e.target.files ?? [])].filter((f) => f.size <= 25 * 1024 * 1024);
                 setFiles([...files, ...picked].slice(0, 3));
                 e.target.value = '';
               }}
@@ -78,13 +79,20 @@ export function StitchingForm() {
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    for (const k of Object.keys(files)) {
-      fd.delete(k);
-      files[k].forEach((f) => fd.append(k, f));
-    }
     setBusy(true);
     setErrors({});
     try {
+      // Photos are shrunk in the browser so the whole request stays under the 6 MB hosting limit.
+      let total = 0;
+      for (const k of Object.keys(files)) {
+        fd.delete(k);
+        for (const f of files[k]) {
+          const small = await shrinkImage(f, 1600, 0.82);
+          total += small.size;
+          fd.append(k, small);
+        }
+      }
+      if (total > 5.5 * 1024 * 1024) throw new Error('Your photos are too large to send together. Remove one or two, or send them on WhatsApp.');
       const r = await api<{ number: string }>('/api/stitching', fd);
       setDone({ number: r.number, name: String(fd.get('name')) });
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -170,7 +178,7 @@ export function StitchingForm() {
         </div>
       </fieldset>
       <fieldset className="grid gap-6 sm:grid-cols-3">
-        <legend className="mb-4 text-2xl">Images <span className="font-sans text-[13px] text-muted">(up to 3 each, 6 MB max)</span></legend>
+        <legend className="mb-4 text-2xl">Images <span className="font-sans text-[13px] text-muted">(up to 3 of each)</span></legend>
         {UPLOADS.map(([k, l]) => (
           <Upload key={k} name={k} label={l} files={files[k]} setFiles={(f) => setFiles((all) => ({ ...all, [k]: f }))} />
         ))}

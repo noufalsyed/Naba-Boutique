@@ -29,7 +29,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  output: 'standalone',
+  // The VPS runs the standalone server; Netlify's Next.js runtime packages the build itself.
+  output: process.env.NETLIFY ? undefined : 'standalone',
   eslint: { ignoreDuringBuilds: true },
   serverExternalPackages: ['sharp', 'exceljs'],
   images: {
@@ -41,7 +42,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },
-      { source: '/media/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, immutable' }] },
+      { source: '/media/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },
     ];
   },
 };

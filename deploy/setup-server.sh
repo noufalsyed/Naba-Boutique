@@ -62,6 +62,7 @@ NODE_ENV=production
 PORT=3000
 HOSTNAME=127.0.0.1
 DATABASE_URL="postgresql://$DB_USER:$DB_PASS@localhost:5432/$DB_NAME"
+DIRECT_URL="postgresql://$DB_USER:$DB_PASS@localhost:5432/$DB_NAME"
 AUTH_SECRET="$(openssl rand -base64 48 | tr -d '\n')"
 CRON_SECRET="$(openssl rand -hex 24)"
 APP_URL="https://$DOMAIN"

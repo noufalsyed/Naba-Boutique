@@ -4,6 +4,7 @@ import { PackageSearch } from 'lucide-react';
 import { OrderDetails, OrderTimeline } from '@/components/store/order-details';
 import { findOrderForCustomer } from '@/server/orders';
 import { rateLimit } from '@/server/rate-limit';
+import { clientIp } from '@/server/http';
 
 export const metadata: Metadata = { title: 'Track Your Order', description: 'Check the status of your NABA Boutique order.', alternates: { canonical: '/track' } };
 export const dynamic = 'force-dynamic';
@@ -17,9 +18,8 @@ export default async function TrackPage({ searchParams }: Props) {
   let order = null;
   let error = '';
   if (number && phone) {
-    const h = await headers();
-    const ip = h.get('x-real-ip') || h.get('x-forwarded-for')?.split(',')[0] || 'unknown';
-    if (!rateLimit(`track:${ip}`, 30, 10 * 60_000).ok) error = 'Too many lookups. Please try again in a few minutes.';
+    const ip = clientIp(await headers());
+    if (!(await rateLimit(`track:${ip}`, 30, 10 * 60_000)).ok) error = 'Too many lookups. Please try again in a few minutes.';
     else {
       order = await findOrderForCustomer(number, { phone });
       if (!order) error = 'We could not find an order with that number and mobile number.';

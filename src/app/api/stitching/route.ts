@@ -9,7 +9,7 @@ import { stitchingFields } from '@/lib/validators';
 const KINDS = { reference: 'REFERENCE', material: 'MATERIAL', inspiration: 'INSPIRATION' } as const;
 
 export const POST = publicApi(async ({ req, ip }) => {
-  if (!rateLimit(`stitch:${ip}`, 6, 30 * 60_000).ok) throw tooMany('Too many requests. Please message us on WhatsApp instead.');
+  if (!(await rateLimit(`stitch:${ip}`, 6, 30 * 60_000)).ok) throw tooMany('Too many requests. Please message us on WhatsApp instead.');
   const len = Number(req.headers.get('content-length') ?? 0);
   if (len > 25 * 1024 * 1024) throw badRequest('Uploads are too large. Use up to 3 images per type, 6 MB each.');
   let form: FormData;

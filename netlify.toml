@@ -1,0 +1,13 @@
+# Netlify deployment (see docs/DEPLOYMENT-NETLIFY.md).
+# The database migrations run before each build.
+[build]
+  command = "npx prisma migrate deploy && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Netlify's Next.js runtime, pinned in package.json so builds are repeatable.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

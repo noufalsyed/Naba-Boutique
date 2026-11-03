@@ -58,9 +58,12 @@ src/app/api/       JSON API (public + /api/admin, staff-only)
 src/server/        database services: stock, orders, purchases, excel, reports, payments, auth
 src/lib/           shared helpers: pricing, WhatsApp messages, validation, formatting
 src/components/    store/ and admin/ UI
-deploy/            Oracle VM setup, Nginx, systemd, deploy and backup scripts
+deploy/            VPS setup, Nginx, systemd, deploy and backup scripts
+netlify.toml       Netlify build; netlify/functions/ has the 5-minute maintenance job
 ```
 
-Deployment: see **[docs/DEPLOYMENT-ORACLE.md](docs/DEPLOYMENT-ORACLE.md)**.
+Deployment, either:
+- **Free, no server:** Netlify + Neon, see **[docs/DEPLOYMENT-NETLIFY.md](docs/DEPLOYMENT-NETLIFY.md)**.
+- **Your own server** (Oracle / Google Cloud free VM or any VPS): see **[docs/DEPLOYMENT-ORACLE.md](docs/DEPLOYMENT-ORACLE.md)**.
 
 Ready for later: coupons (`Coupon` table), product reviews (`Review` table, shown when approved), customer accounts (customers are already stored by phone), GST invoices, more payment gateways, the WhatsApp Business API (message builders in `src/lib/whatsapp.ts`) and a shipping API (courier and tracking number fields on orders).

@@ -14,3 +14,4 @@ next-env.d.ts
 .claude/
 TEST-LOGINS.txt
 tests/e2e/last-run.json
+.netlify/

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ImagePlus, Pencil, Plus, Trash2 } from 'lucide-react';
 import { Badge, Card, Field, Modal, SubmitButton, useAction, useToast } from '@/components/admin/ui';
 import { api } from '@/lib/api-client';
+import { shrinkImage } from '@/lib/shrink-image';
 
 interface Cat {
   id?: string;
@@ -31,7 +32,7 @@ export function CategoryManager({ categories }: { categories: Cat[] }) {
   const upload = async (f: File | undefined) => {
     if (!f || !edit) return;
     const fd = new FormData();
-    fd.append('file', f);
+    fd.append('file', await shrinkImage(f));
     fd.append('folder', 'categories');
     try {
       const { urls } = await api<{ urls: string[] }>('/api/admin/uploads', fd);

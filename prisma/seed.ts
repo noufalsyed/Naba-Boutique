@@ -2,23 +2,18 @@
 // Demo sales/purchases are only added outside production (or with SEED_DEMO_SALES=true).
 import '../scripts/load-env';
 import fs from 'node:fs/promises';
-import path from 'node:path';
 import { randomBytes } from 'node:crypto';
 import sharp from 'sharp';
 import { prisma, transaction } from '@/server/db';
 import { changeStock } from '@/server/stock';
 import { hashPassword } from '@/server/auth/password';
+import { putPublicFile } from '@/server/storage';
 import { slugify } from '@/lib/slug';
 import { productArt, type ArtSpec } from './placeholder-art';
 
-const storage = path.resolve(process.env.STORAGE_DIR || './storage');
-
 async function writeArt(name: string, spec: ArtSpec, variant: 'front' | 'detail' = 'front') {
-  const dir = path.join(storage, 'public', 'products');
-  await fs.mkdir(dir, { recursive: true });
-  const file = `${name}-${variant}.webp`;
-  await sharp(Buffer.from(productArt(spec, variant))).webp({ quality: 84 }).toFile(path.join(dir, file));
-  return `/media/products/${file}`;
+  const data = await sharp(Buffer.from(productArt(spec, variant))).webp({ quality: 84 }).toBuffer();
+  return putPublicFile('products', `${name}-${variant}.webp`, data);
 }
 
 const CATEGORIES = [

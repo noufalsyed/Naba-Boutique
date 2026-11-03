@@ -1,21 +1,19 @@
-// Serves public product/category images from STORAGE_DIR/public. In
-// production Nginx serves /media directly from disk (deploy/nginx.conf) and
+// Serves public product/category images from storage (disk or Netlify Blobs).
+// On a VPS, Nginx serves /media directly from disk (deploy/nginx.conf) and
 // this route is only a fallback.
-import fs from 'node:fs/promises';
 import path from 'node:path';
-import { safeResolve, storageRoot } from '@/server/storage';
+import { readStored } from '@/server/storage';
 
 const TYPES: Record<string, string> = { '.webp': 'image/webp', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.avif': 'image/avif' };
 
 export async function GET(_req: Request, { params }: { params: Promise<{ path: string[] }> }) {
   const rel = (await params).path.join('/');
-  const file = safeResolve(path.join(storageRoot(), 'public'), rel);
-  const type = file ? TYPES[path.extname(file).toLowerCase()] : undefined;
-  if (!file || !type) return new Response('Not found', { status: 404 });
-  try {
-    const data = await fs.readFile(file);
-    return new Response(new Uint8Array(data), { headers: { 'Content-Type': type, 'Cache-Control': 'public, max-age=2592000, immutable', 'X-Content-Type-Options': 'nosniff' } });
-  } catch {
-    return new Response('Not found', { status: 404 });
-  }
+  const type = TYPES[path.extname(rel).toLowerCase()];
+  const data = type ? await readStored(`public/${rel}`) : null;
+  if (!data) return new Response('Not found', { status: 404, headers: { 'Cache-Control': 'no-store' } });
+  // File names are unique per upload, so every copy can be cached for good.
+  const cache = 'public, max-age=31536000, immutable';
+  return new Response(new Uint8Array(data), {
+    headers: { 'Content-Type': type, 'Cache-Control': cache, 'Netlify-CDN-Cache-Control': cache, 'X-Content-Type-Options': 'nosniff' },
+  });
 }

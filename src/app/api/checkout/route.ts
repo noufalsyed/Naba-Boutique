@@ -8,7 +8,7 @@ import { checkoutSchema } from '@/lib/validators';
 import { cartOrderMessage, waLink } from '@/lib/whatsapp';
 
 export const POST = publicApi(async ({ body, ip }) => {
-  if (!rateLimit(`checkout:${ip}`, 12, 10 * 60_000).ok) throw tooMany('Too many orders from this connection. Please wait a few minutes or order on WhatsApp.');
+  if (!(await rateLimit(`checkout:${ip}`, 12, 10 * 60_000)).ok) throw tooMany('Too many orders from this connection. Please wait a few minutes or order on WhatsApp.');
   const input = await body(checkoutSchema);
   const order = await createCustomerOrder(input);
   const cfg = storeConfig();
