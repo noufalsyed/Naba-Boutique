@@ -1,6 +1,6 @@
 // Local development only: runs a PostgreSQL server from the embedded-postgres
 // dev dependency so no system install is needed. Production uses a managed
-// PostgreSQL server (see docs/DEPLOYMENT.md).
+// PostgreSQL server (see docs/DEPLOYMENT-ORACLE.md).
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -18,6 +18,15 @@ const pg = new EmbeddedPostgres({
   persistent: true,
   initdbFlags: ['--encoding=UTF8', '--locale=C'],
 });
+
+// A crash or closed terminal leaves postmaster.pid behind, which blocks the next start.
+const pidFile = path.join(dataDir, 'postmaster.pid');
+if (fs.existsSync(pidFile)) {
+  const pid = Number(fs.readFileSync(pidFile, 'utf8').split('\n')[0]);
+  let alive = false;
+  try { process.kill(pid, 0); alive = true; } catch {}
+  if (!alive) fs.rmSync(pidFile);
+}
 
 const fresh = !fs.existsSync(path.join(dataDir, 'PG_VERSION'));
 if (fresh) await pg.initialise();
