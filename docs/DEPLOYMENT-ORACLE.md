@@ -4,6 +4,18 @@ This runs the whole store (website, admin, PostgreSQL, images) on one free Oracl
 
 **Recommended VM:** *VM.Standard.A1.Flex* (Ampere ARM), 1–2 OCPU, 6–12 GB RAM, Ubuntu 22.04 or 24.04. The 1 GB AMD micro VM also works (the setup script adds swap), but builds are slow.
 
+**No Oracle account?** The same scripts work on any Ubuntu 22.04/24.04 server. Replace step 1 with the box below, then continue from step 2.
+
+> **Google Cloud free e2-micro:** console.cloud.google.com → *Compute Engine → VM instances → Create instance*.
+> - Region **us-central1**, **us-west1** or **us-east1** (only these are free), machine type **e2-micro**.
+> - Boot disk: *Ubuntu 22.04 LTS*, type **Standard persistent disk**, 30 GB (the default "Balanced" disk is not free).
+> - Firewall: tick **Allow HTTP traffic** and **Allow HTTPS traffic**.
+> - After it starts, *VPC network → IP addresses* → reserve the VM's external IP as **static**.
+> - Connect with the **SSH** button in the console (no key needed), then follow steps 3–7.
+> - Set a budget alert (*Billing → Budgets & alerts*, e.g. ₹100) so any charge is emailed to you.
+>
+> **Any paid VPS** (Hostinger, DigitalOcean, etc., Ubuntu, 1–2 GB RAM): open ports 80/443 in its firewall and follow steps 2–7.
+
 ---
 
 ## 1. Create the VM (Oracle Console)
@@ -29,11 +41,19 @@ Wait until `ping yourdomain.in` shows the VM IP (usually minutes, up to a few ho
 
 ## 3. Copy the code and run setup
 
-From your PC (in `D:\feathers`), commit the code and push it to a **private** GitHub repository, then on the VM:
+From your PC (in `D:\feathers`), push the code to a **private** GitHub repository. Then on the VM, give the server a read-only *deploy key* so it can download that private repository:
 
 ```bash
 ssh ubuntu@<VM-IP>
-sudo git clone https://github.com/<you>/feathers.git /opt/feathers
+sudo ssh-keygen -t ed25519 -N "" -f /root/.ssh/id_ed25519
+sudo cat /root/.ssh/id_ed25519.pub
+```
+
+Copy the printed line into GitHub: repository → *Settings → Deploy keys → Add deploy key* (leave "Allow write access" off). Then:
+
+```bash
+sudo ssh -o StrictHostKeyChecking=accept-new -T git@github.com   # prints "successfully authenticated"
+sudo git clone git@github.com:<you>/<repo>.git /opt/feathers
 sudo bash /opt/feathers/deploy/setup-server.sh yourdomain.in you@email.com
 ```
 
@@ -60,12 +80,12 @@ Never commit `.env` and never share it — it holds the database password and pa
 
 ```bash
 sudo bash /opt/feathers/deploy/deploy.sh
-cd /opt/feathers && sudo -u feathers -E bash -c 'set -a; . ./.env; set +a; npm run admin:create -- owner@yourmail.com "Your Name"'
+cd /opt/feathers && sudo -u feathers -H bash -c 'set -a; . ./.env; set +a; npm run admin:create -- owner@yourmail.com "Your Name"'
 ```
 
 The second command prints a one-time password. Sign in at `https://yourdomain.in/admin` and change it under **My Account**.
 
-**Demo products (optional):** `sudo -u feathers -E bash -c 'set -a; . ./.env; set +a; npm run db:seed'` loads the sample catalogue (no demo orders in production). Replace photos and prices in **Products**, or delete them.
+**Demo products (optional):** `cd /opt/feathers && sudo -u feathers -H bash -c 'set -a; . ./.env; set +a; npm run db:seed'` loads the sample catalogue (no demo orders or extra logins in production). Replace photos and prices in **Products**, or delete them.
 
 ## 6. Payments (Razorpay: UPI, cards, net banking, wallets)
 

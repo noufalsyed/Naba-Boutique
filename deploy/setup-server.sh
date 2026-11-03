@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# One-time setup of an Oracle Cloud Always Free VM (Ubuntu 22.04 / 24.04, Ampere ARM or AMD).
+# One-time setup of an Ubuntu 22.04 / 24.04 server: Oracle Cloud Always Free (Ampere ARM or AMD),
+# Google Cloud free e2-micro, or any VPS.
 # Installs Node.js 22, PostgreSQL, Nginx and Certbot, opens ports 80/443, creates
 # the database, a 'feathers' system user and a swap file.
 #
@@ -30,8 +31,9 @@ if ! swapon --show | grep -q /swapfile; then
 fi
 
 echo "==> Firewall: Oracle Ubuntu images REJECT everything except SSH in iptables"
+# Inserted at the top so it lands before Oracle's REJECT rule; harmless on other clouds.
 for port in 80 443; do
-  iptables -C INPUT -p tcp --dport $port -m state --state NEW -j ACCEPT 2>/dev/null || iptables -I INPUT 6 -p tcp --dport $port -m state --state NEW -j ACCEPT
+  iptables -C INPUT -p tcp --dport $port -m state --state NEW -j ACCEPT 2>/dev/null || iptables -I INPUT 1 -p tcp --dport $port -m state --state NEW -j ACCEPT
 done
 netfilter-persistent save
 
@@ -39,6 +41,8 @@ echo "==> App user and folders"
 id feathers >/dev/null 2>&1 || useradd --system --create-home --home-dir /home/feathers --shell /usr/sbin/nologin feathers
 mkdir -p "$APP_DIR" "$APP_DIR/storage/public" "$APP_DIR/storage/private" /var/backups/feathers
 chown -R feathers:feathers "$APP_DIR" /var/backups/feathers
+# The checkout belongs to "feathers", but updates run "sudo git pull" as root.
+git config --system --get-all safe.directory | grep -qx "$APP_DIR" || git config --system --add safe.directory "$APP_DIR"
 
 echo "==> PostgreSQL"
 DB_PASS_FILE=/root/.feathers-db-password

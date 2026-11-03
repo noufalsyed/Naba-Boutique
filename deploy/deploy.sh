@@ -7,16 +7,19 @@ cd "$APP_DIR"
 
 [ -f .env ] || { echo "Missing $APP_DIR/.env — run setup-server.sh first"; exit 1; }
 set -a; . ./.env; set +a
+# Run as the app user with its own HOME (npm cache), keeping the .env variables.
+as_app() { sudo -u feathers -E -H "$@"; }
 
 echo "==> Install dependencies"
 chown -R feathers:feathers "$APP_DIR"
-sudo -u feathers -E npm ci --no-audit --no-fund
+# .env sets NODE_ENV=production, which would skip the build tools (prisma, tailwind, typescript).
+as_app npm ci --include=dev --no-audit --no-fund
 
 echo "==> Database migrations"
-sudo -u feathers -E npx prisma migrate deploy
+as_app npx prisma migrate deploy
 
 echo "==> Build"
-sudo -u feathers -E npm run build
+as_app npm run build
 # The standalone server needs the static assets and public folder beside it.
 sudo -u feathers cp -r .next/static .next/standalone/.next/static
 sudo -u feathers cp -r public .next/standalone/public

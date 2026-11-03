@@ -92,7 +92,8 @@ async function seedStaff() {
 }
 
 async function main() {
-  await seedStaff();
+  // In production the owner's login comes from `npm run admin:create`; no extra accounts.
+  if (process.env.NODE_ENV !== 'production') await seedStaff();
   if ((await prisma.product.count()) > 0) {
     console.log('Catalogue already has products — skipping demo catalogue.');
     return;
