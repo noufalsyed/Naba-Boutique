@@ -80,15 +80,13 @@ If you add or change variables later, redeploy: **Deploys → Trigger deploy →
 
 ## 4. Create your admin login
 
-In a terminal in `D:\feathers` on your PC (PowerShell), with the **pooled** Neon address:
+In a terminal in `D:\feathers` on your PC. This reads the live database address from `.env.netlify`:
 
-```powershell
-$env:DATABASE_URL="<pooled Neon address>"; npm run admin:create -- you@email.com "Your Name"
+```bash
+npm run admin:create:live -- you@email.com "Your Name"
 ```
 
-It prints a one-time password. Sign in at `https://<your-site>.netlify.app/admin` and change it under **My Account**. Add cashiers under **Staff**.
-
-**Close that terminal window afterwards.** While it stays open, its commands point at the live database.
+It shows `Database: ep-….neon.tech` (the live database) and prints a one-time password. Sign in at `https://<your-site>.netlify.app/admin` and change it under **My Account**. Add cashiers under **Staff**. Running it again with the same email resets that account's password.
 
 ### Demo products (optional)
 

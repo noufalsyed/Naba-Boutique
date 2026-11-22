@@ -14,6 +14,7 @@
     "db:seed": "tsx --conditions=react-server prisma/seed.ts",
     "db:reset": "prisma migrate reset --force",
     "admin:create": "tsx --conditions=react-server scripts/create-admin.ts",
+    "admin:create:live": "tsx --env-file=.env.netlify --conditions=react-server scripts/create-admin.ts",
     "test": "tsx --conditions=react-server --test tests/unit/*.test.ts",
     "test:e2e": "tsx tests/e2e/run.ts"
   },

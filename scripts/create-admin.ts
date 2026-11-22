@@ -1,5 +1,6 @@
 // Creates (or resets the password of) an admin account from the command line.
-//   npm run admin:create -- owner@example.com "Owner Name"
+//   npm run admin:create -- owner@example.com "Owner Name"        (local database, .env)
+//   npm run admin:create:live -- owner@example.com "Owner Name"   (live site, .env.netlify)
 // The password is read from ADMIN_PASSWORD, or a strong one is generated and printed once.
 import './load-env';
 import { randomBytes } from 'node:crypto';
@@ -18,6 +19,8 @@ async function main() {
   if (problem) throw new Error(problem);
   const passwordHash = await hashPassword(password);
   const name = nameParts.join(' ') || 'Store Admin';
+  // Show which database is being changed (host only, never the password).
+  console.log(`Database: ${process.env.DATABASE_URL?.match(/@([^/:?]+)/)?.[1] ?? 'unknown'}`);
   const user = await prisma.adminUser.upsert({
     where: { email },
     update: { passwordHash, role: 'ADMIN', isActive: true, failedLoginCount: 0, lockedUntil: null },
