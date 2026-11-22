@@ -7,6 +7,11 @@
 [build.environment]
   NODE_VERSION = "22"
   NEXT_TELEMETRY_DISABLED = "1"
+  # Netlify fails the build when a setting's value appears in the code. These
+  # settings are public shop details shown on the website, not secrets.
+  # Secrets (DATABASE_URL, DIRECT_URL, AUTH_SECRET, CRON_SECRET,
+  # PAYMENT_GATEWAY_SECRET, PAYMENT_WEBHOOK_SECRET, RESEND_API_KEY) are still scanned.
+  SECRETS_SCAN_OMIT_KEYS = "APP_URL,PLATFORM,SESSION_HOURS,WHATSAPP_NUMBER,WHATSAPP_BUSINESS_NAME,STORE_PHONE,STORE_EMAIL,STORE_ADDRESS,INSTAGRAM_URL,FACEBOOK_URL,SHIPPING_FLAT,FREE_SHIPPING_ABOVE,ESTIMATED_DELIVERY,PAYMENT_GATEWAY,PAYMENT_GATEWAY_KEY,PAYMENT_HOLD_MINUTES,WHATSAPP_HOLD_HOURS,MAIL_FROM"
 
 # Netlify's Next.js runtime, pinned in package.json so builds are repeatable.
 [[plugins]]
