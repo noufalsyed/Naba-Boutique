@@ -48,7 +48,7 @@ export function CheckoutView() {
   const router = useRouter();
   const [form, setForm] = useState<Form>(EMPTY);
   const [sameWa, setSameWa] = useState(true);
-  const [method, setMethod] = useState<'ONLINE' | 'WHATSAPP'>('ONLINE');
+  const [method, setMethod] = useState<'ONLINE' | 'WHATSAPP'>(config.onlinePayments ? 'ONLINE' : 'WHATSAPP');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const totals = computeTotals(cart, config.shipping);
@@ -147,6 +147,7 @@ export function CheckoutView() {
           <section>
             <h2 className="mb-4 text-2xl">3. Payment Method</h2>
             <div className="space-y-3" role="radiogroup">
+              {config.onlinePayments && (
               <label className={`flex cursor-pointer gap-4 border bg-white p-4 transition-colors ${method === 'ONLINE' ? 'border-charcoal' : 'border-line hover:border-beige'}`}>
                 <input type="radio" name="method" checked={method === 'ONLINE'} onChange={() => setMethod('ONLINE')} className="mt-1 accent-wine" />
                 <span className="flex-1">
@@ -154,6 +155,7 @@ export function CheckoutView() {
                   <span className="mt-1 block text-[13px] text-muted">UPI (GPay, PhonePe, Paytm), credit & debit cards, net banking and wallets — through our secure payment gateway. We never see or store your card details.</span>
                 </span>
               </label>
+              )}
               <label className={`flex cursor-pointer gap-4 border bg-white p-4 transition-colors ${method === 'WHATSAPP' ? 'border-charcoal' : 'border-line hover:border-beige'}`}>
                 <input type="radio" name="method" checked={method === 'WHATSAPP'} onChange={() => setMethod('WHATSAPP')} className="mt-1 accent-wine" />
                 <span className="flex-1">

@@ -131,3 +131,20 @@ test('formatting and slugs', () => {
   assert.equal(slugify('Salwar & Kurti'), 'salwar-and-kurti');
   assert.equal(productPath('chudidhars', 'cotton'), '/shop/chudidhars/cotton');
 });
+
+test('online payment is offered only when the gateway is set up', async () => {
+  const { storeConfig } = await import('@/server/config');
+  const saved = { ...process.env };
+  const env = process.env as Record<string, string | undefined>;
+  try {
+    Object.assign(env, { NODE_ENV: 'production', PAYMENT_GATEWAY: 'razorpay', PAYMENT_GATEWAY_KEY: '', PAYMENT_GATEWAY_SECRET: '' });
+    assert.equal(storeConfig().onlinePayments, false, 'no Razorpay keys → WhatsApp only');
+    Object.assign(env, { PAYMENT_GATEWAY_KEY: 'rzp_test_x', PAYMENT_GATEWAY_SECRET: 's' });
+    assert.equal(storeConfig().onlinePayments, true);
+    Object.assign(env, { PAYMENT_GATEWAY: 'mock', ALLOW_MOCK_PAYMENTS: '' });
+    assert.equal(storeConfig().onlinePayments, false, 'mock is never offered in production');
+  } finally {
+    for (const k of Object.keys(env)) if (!(k in saved)) delete env[k];
+    Object.assign(env, saved);
+  }
+});

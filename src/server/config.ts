@@ -3,6 +3,13 @@ import { BRAND } from '@/lib/constants';
 
 const num = (v: string | undefined, d: number) => (v != null && v !== '' && Number.isFinite(Number(v)) ? Number(v) : d);
 
+/** Online payment is offered only once the gateway is set up (Razorpay keys present). */
+function onlinePaymentsReady(e: NodeJS.ProcessEnv) {
+  const gateway = (e.PAYMENT_GATEWAY || 'mock').toLowerCase();
+  if (gateway === 'mock') return e.NODE_ENV !== 'production' || e.ALLOW_MOCK_PAYMENTS === 'true';
+  return Boolean(e.PAYMENT_GATEWAY_KEY && e.PAYMENT_GATEWAY_SECRET);
+}
+
 /** Store settings from environment variables (see .env.example). */
 export function storeConfig() {
   const e = process.env;
@@ -19,6 +26,7 @@ export function storeConfig() {
     estimatedDelivery: e.ESTIMATED_DELIVERY || '3–7 working days across India',
     paymentHoldMinutes: num(e.PAYMENT_HOLD_MINUTES, 30),
     whatsappHoldHours: num(e.WHATSAPP_HOLD_HOURS, 24),
+    onlinePayments: onlinePaymentsReady(e),
   };
 }
 
@@ -38,6 +46,7 @@ export function publicConfig() {
     facebookUrl: c.facebookUrl,
     shipping: c.shipping,
     estimatedDelivery: c.estimatedDelivery,
+    onlinePayments: c.onlinePayments,
   };
 }
 export type PublicConfig = ReturnType<typeof publicConfig>;

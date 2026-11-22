@@ -1,5 +1,5 @@
 import { publicApi } from '@/server/http';
-import { tooMany } from '@/server/errors';
+import { badRequest, tooMany } from '@/server/errors';
 import { rateLimit } from '@/server/rate-limit';
 import { createCustomerOrder } from '@/server/orders';
 import { storeConfig } from '@/server/config';
@@ -10,8 +10,9 @@ import { cartOrderMessage, waLink } from '@/lib/whatsapp';
 export const POST = publicApi(async ({ body, ip }) => {
   if (!(await rateLimit(`checkout:${ip}`, 12, 10 * 60_000)).ok) throw tooMany('Too many orders from this connection. Please wait a few minutes or order on WhatsApp.');
   const input = await body(checkoutSchema);
-  const order = await createCustomerOrder(input);
   const cfg = storeConfig();
+  if (input.method === 'ONLINE' && !cfg.onlinePayments) throw badRequest('Online payment is not available yet. Please order via WhatsApp.');
+  const order = await createCustomerOrder(input);
   const result: Record<string, unknown> = { number: order.number, key: order.accessKey, method: input.method, total: n(order.total) };
   if (input.method === 'WHATSAPP') {
     const text = cartOrderMessage(cfg.businessName, {

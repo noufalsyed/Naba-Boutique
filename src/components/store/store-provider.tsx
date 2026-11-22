@@ -16,6 +16,8 @@ export interface SiteConfig {
   facebookUrl: string;
   shipping: { flat: number; freeAbove: number };
   estimatedDelivery: string;
+  /** False until the payment gateway keys are set; checkout then offers WhatsApp only. */
+  onlinePayments: boolean;
 }
 
 interface Toast {
