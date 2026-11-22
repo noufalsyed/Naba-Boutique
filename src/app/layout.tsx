@@ -1,11 +1,27 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Jost } from 'next/font/google';
+import localFont from 'next/font/local';
 import { BRAND, BRAND_QUOTE } from '@/lib/constants';
 import { storeConfig } from '@/server/config';
 import './globals.css';
 
-const serif = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600'], style: ['normal', 'italic'], variable: '--font-cormorant', display: 'swap' });
-const sans = Jost({ subsets: ['latin'], weight: ['300', '400', '500'], variable: '--font-jost', display: 'swap' });
+// Self-hosted (Fontsource, SIL Open Font License, see ./fonts) so builds never
+// depend on reaching Google Fonts. Variable fonts: one file covers every weight.
+const serif = localFont({
+  src: [
+    { path: './fonts/cormorant-garamond-latin-wght-normal.woff2', weight: '300 700', style: 'normal' },
+    { path: './fonts/cormorant-garamond-latin-wght-italic.woff2', weight: '300 700', style: 'italic' },
+  ],
+  variable: '--font-cormorant',
+  display: 'swap',
+  fallback: ['Georgia', 'Times New Roman', 'serif'],
+});
+const sans = localFont({
+  src: './fonts/jost-latin-wght-normal.woff2',
+  weight: '100 900',
+  variable: '--font-jost',
+  display: 'swap',
+  fallback: ['system-ui', 'Segoe UI', 'Arial', 'sans-serif'],
+});
 
 export function generateMetadata(): Metadata {
   const { appUrl } = storeConfig();
